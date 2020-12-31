@@ -53,7 +53,7 @@ addLayer("tree-tab", {
                         {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
 					'blank', 'blank', 'blank',
 					["display-text",
-                        function() {return "Jelly owned: "+format(player.points)+"<br/>Jelly created (this game): "+format(player["tree-tab"].totalish)+"<br/>Jelly created (all time): "+format(player["tree-tab"].total)+"<br/>Max jelly had: "+format(player["tree-tab"].best)+"<br/>Jelly per second: "+format(getPointGen())+"<br/>Button clicks: "+format(player["tree-tab"].click)+"<br/>Date started: W.I.P.<br/>Current version: 0.10 (\"Bet this dude will not be able to replicate Jelly Lift completely\" Update)<br/>Elevator uses: "+format(player["tree-tab"].elevatorUses)},
+                        function() {return "Jelly owned: "+format(player.points)+"<br/>Jelly created (this game): "+format(player["tree-tab"].totalish)+"<br/>Jelly created (all time): "+format(player["tree-tab"].total)+"<br/>Max jelly had: "+format(player["tree-tab"].best)+"<br/>Jelly per second: "+format(getPointGen())+"<br/>Button clicks: "+format(player["tree-tab"].click)+"<br/>Date started: "+new Date(player.time - player.timePlayed * 1000).toLocaleDateString("en-US")+".<br/>Current version: 0.10 (\"Bet this dude will not be able to replicate Jelly Lift completely\" Update)<br/>Elevator uses: "+format(player["tree-tab"].elevatorUses)},
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 					'blank', 'blank', 'blank',
 					["display-text",
