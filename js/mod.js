@@ -12,11 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.10",
+	num: "0.20",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.20</h3><br>
+		- Three floors were restored/added in<br/>
+		- More achievements! (+11 and -1 to be exact)<br/>
+		- Made volcano upgrades actually do something<br/>
+		- Statistics now displays the floors you've unlocked instead<br/><br/>
 	<h3>v0.10</h3><br>
 		- Mod was made (in less than 2 days)`
 
@@ -40,7 +45,7 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = player.ff.buyables[11].mul(layers.ff.effect()).add(player.wf.buyables[11].mul(layers.wf.effect())).add(player.vf.buyables[11].mul(layers.vf.effect()))
+	let gain = player.ff.buyables[11].mul(layers.ff.effect()).add(player.wf.buyables[11].mul(layers.wf.effect())).add(player.vf.buyables[11].mul(layers.vf.effect())).add(player.gf2.buyables[11].mul(layers.gf2.effect())).add(player.wf2.buyables[11].mul(layers.wf2.effect()))
 	return gain
 }
 
