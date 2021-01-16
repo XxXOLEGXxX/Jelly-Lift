@@ -28,16 +28,22 @@ addLayer("tree-tab", {
 		floorVolcano: new Decimal(0),
 		floorGarden: new Decimal(0),
 		floorGate: new Decimal(0),
-		floorWindmill: new Decimal(0)
+		floorWindmill: new Decimal(0),
+		floorTreasureChest: new Decimal(0),
+		floorFountain: new Decimal(0),
+		floorPortal: new Decimal(0)
     }},
 	update(diff){
 		player["tree-tab"].total = player["tree-tab"].total.add(getPointGen().mul(diff))
 		player["tree-tab"].totalish = player["tree-tab"].totalish.add(getPointGen().mul(diff))
-		player["tree-tab"].floorFactory = player["tree-tab"].floorFactory.add(player.ff.buyables[11].mul(layers.ff.effect()))
-		player["tree-tab"].floorWell = player["tree-tab"].floorWell.add(player.wf.buyables[11].mul(layers.wf.effect()))
-		player["tree-tab"].floorVolcano = player["tree-tab"].floorVolcano.add(player.vf.buyables[11].mul(layers.vf.effect()))
-		player["tree-tab"].floorGate = player["tree-tab"].floorGate.add(player.gf2.buyables[11].mul(layers.gf2.effect()))
-		player["tree-tab"].floorWindmill = player["tree-tab"].floorWindmill.add(player.wf2.buyables[11].mul(layers.wf2.effect()))
+		player["tree-tab"].floorFactory = player["tree-tab"].floorFactory.add(player.ff.buyables[11].mul(layers.ff.effect()).mul(diff))
+		player["tree-tab"].floorWell = player["tree-tab"].floorWell.add(player.wf.buyables[11].mul(layers.wf.effect()).mul(diff))
+		player["tree-tab"].floorVolcano = player["tree-tab"].floorVolcano.add(player.vf.buyables[11].mul(layers.vf.effect()).mul(diff))
+		player["tree-tab"].floorGate = player["tree-tab"].floorGate.add(player.gf2.buyables[11].mul(layers.gf2.effect()).mul(diff))
+		player["tree-tab"].floorWindmill = player["tree-tab"].floorWindmill.add(player.wf2.buyables[11].mul(layers.wf2.effect()).mul(diff))
+		player["tree-tab"].floorTreasureChest = player["tree-tab"].floorTreasureChest.add(player.tcf.buyables[11].mul(layers.tcf.effect()).mul(diff))
+		player["tree-tab"].floorFountain = player["tree-tab"].floorFountain.add(player.ff2.buyables[11].mul(layers.ff2.effect()).mul(diff))
+		player["tree-tab"].floorPortal = player["tree-tab"].floorPortal.add(player.pf.buyables[11].mul(layers.pf.effect()).mul(diff))
 		if(player.points.gt(player["tree-tab"].best)) player["tree-tab"].best = player.points
 	},
         tabFormat: {
@@ -58,7 +64,7 @@ addLayer("tree-tab", {
                         {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
 					'blank', 'blank', 'blank',
 					["display-text",
-                        function() {return "Jelly owned: "+format(player.points)+"<br/>Jelly created (this game): "+format(player["tree-tab"].totalish)+"<br/>Jelly created (all time): "+format(player["tree-tab"].total)+"<br/>Max jelly had: "+format(player["tree-tab"].best)+"<br/>Jelly per second: "+format(getPointGen())+"<br/>Button clicks: "+format(player["tree-tab"].click)+"<br/>Date started: "+new Date(player.time - player.timePlayed * 1000).toLocaleDateString("en-US")+".<br/>Current version: 0.20 (More Accurate Update)<br/>Elevator uses: "+format(player["tree-tab"].elevatorUses)},
+                        function() {return "Jelly owned: "+format(player.points)+"<br/>Jelly created (this game): "+format(player["tree-tab"].totalish)+"<br/>Jelly created (all time): "+format(player["tree-tab"].total)+"<br/>Max jelly had: "+format(player["tree-tab"].best)+"<br/>Jelly per second: "+format(getPointGen())+"<br/>Button clicks: "+format(player["tree-tab"].click)+"<br/>Date started: "+new Date(player.time - player.timePlayed * 1000).toLocaleDateString("en-US")+".<br/>Current version: 0.30 (Still No Elevator Uses Upgrade ;( )<br/>Elevator uses: W.I.P."},
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 					'blank', 'blank', 'blank',
 					["display-text",
@@ -85,6 +91,15 @@ addLayer("tree-tab", {
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 					["display-text",
                         function() {return player.wf2.buyables[11].gte(1) ? "Jelly created by windmill: "+format(player["tree-tab"].floorWindmill) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.tcf.buyables[11].gte(1) ? "Jelly created by treasure chest: "+format(player["tree-tab"].floorTreasureChest) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.ff2.buyables[11].gte(1) ? "Jelly created by fountain: "+format(player["tree-tab"].floorFountain) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.pf.buyables[11].gte(1) ? "Jelly created by portal: "+format(player["tree-tab"].floorPortal) : ""},
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 					'blank', 'blank', 'blank',
 					["display-text",
@@ -117,7 +132,7 @@ addLayer("tree-tab", {
                 buttonStyle() {return  {'background-color': 'gray', 'color': 'white', 'border-color': 'gray'}},
                 content:
                     [["display-text",
-                        function() {return "ACHIEVEMENTS:   "+format(player["tree-tab"].achievements.length)+"/31 ("+format(new Decimal(player["tree-tab"].achievements.length).div(31).mul(100))+"%)"},
+                        function() {return "ACHIEVEMENTS:   "+format(player["tree-tab"].achievements.length)+"/46 ("+format(new Decimal(player["tree-tab"].achievements.length).div(46).mul(100))+"%)"},
                         {"color": "white", "font-size": "35px", "font-family": "Comic Sans MS"}],
 						"blank", "achievements"],
             },
@@ -129,7 +144,7 @@ addLayer("tree-tab", {
         },
 		upgrades: {
 			rows: 5,
-			cols: 6,
+			cols: 9,
 			11: {
 				description: "Doubles the profits of factory",
 				cost: new Decimal(1500),
@@ -171,6 +186,27 @@ addLayer("tree-tab", {
 				unlocked() {return player.wf2.buyables[11].gte(1)},	
 				canAfford() {return player.points.gte(this.cost)},
 				pay() {return player.points = player.points.sub(700000000)},
+			},
+			17: {
+				description: "Doubles the profits of tresure chest",
+				cost: new Decimal(5000000000),
+				unlocked() {return player.tcf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(5000000000)},
+			},
+			18: {
+				description: "Doubles the profits of fountain",
+				cost: new Decimal(60000000000),
+				unlocked() {return player.ff2.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(60000000000)},
+			},
+			19: {
+				description: "Doubles the profits of portal",
+				cost: new Decimal(1300000000000),
+				unlocked() {return player.pf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(1300000000000)},
 			},
 			21: {
 				description: "Doubles the profits of factory",
@@ -214,6 +250,27 @@ addLayer("tree-tab", {
 				canAfford() {return player.points.gte(this.cost)},
 				pay() {return player.points = player.points.sub(7000000000)},
 			},
+			27: {
+				description: "Doubles the profits of tresure chest",
+				cost: new Decimal(50000000000),
+				unlocked() {return player.tcf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(50000000000)},
+			},
+			28: {
+				description: "Doubles the profits of fountain",
+				cost: new Decimal(1000000000000),
+				unlocked() {return player.ff2.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(1000000000000)},
+			},
+			29: {
+				description: "Doubles the profits of portal",
+				cost: new Decimal(20000000000000),
+				unlocked() {return player.pf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(20000000000000)},
+			},
 			31: {
 				description: "Doubles the profits of factory",
 				cost: new Decimal(10000000),
@@ -256,6 +313,27 @@ addLayer("tree-tab", {
 				canAfford() {return player.points.gte(this.cost)},
 				pay() {return player.points = player.points.sub(30000000000)},
 			},
+			37: {
+				description: "Doubles the profits of tresure chest",
+				cost: new Decimal(100000000000),
+				unlocked() {return player.tcf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(100000000000)},
+			},
+			38: {
+				description: "Doubles the profits of fountain",
+				cost: new Decimal(3000000000000000),
+				unlocked() {return player.ff2.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(3000000000000000)},
+			},
+			39: {
+				description: "Doubles the profits of portal",
+				cost: new Decimal(10000000000000000),
+				unlocked() {return player.pf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(10000000000000000)},
+			},
 			41: {
 				description: "Triples the profits of factory",
 				cost: new Decimal(11000000000),
@@ -285,7 +363,7 @@ addLayer("tree-tab", {
 				pay() {return player.points = player.points.sub(1300000000000)},
 			},
 			45: {
-				description: "Triple the profits of gate",
+				description: "Triples the profits of gate",
 				cost: new Decimal(4200000000000),
 				unlocked() {return player.gf2.buyables[11].gte(1)},
 				canAfford() {return player.points.gte(this.cost)},
@@ -297,6 +375,27 @@ addLayer("tree-tab", {
 				unlocked() {return player.wf2.buyables[11].gte(1)},	
 				canAfford() {return player.points.gte(this.cost)},
 				pay() {return player.points = player.points.sub(20000000000000)},
+			},
+			47: {
+				description: "Triples the profits of tresure chest",
+				cost: new Decimal(100000000000000),
+				unlocked() {return player.tcf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(100000000000000)},
+			},
+			48: {
+				description: "Triples the profits of fountain",
+				cost: new Decimal(2000000000000000000),
+				unlocked() {return player.ff2.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(2000000000000000000)},
+			},
+			49: {
+				description: "Triples the profits of portal",
+				cost: new Decimal(5000000000000000000),
+				unlocked() {return player.pf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(5000000000000000000)},
 			},
 			51: {
 				description: "7x the profits of factory",
@@ -340,10 +439,31 @@ addLayer("tree-tab", {
 				canAfford() {return player.points.gte(this.cost)},
 				pay() {return player.points = player.points.sub(10000000000000000000)},
 			},
+			57: {
+				description: "7x the profits of tresure chest",
+				cost: new Decimal(100000000000000000000),
+				unlocked() {return player.tcf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(100000000000000000000)},
+			},
+			58: {
+				description: "7x the profits of fountain",
+				cost: new Decimal(1000000000000000000000),
+				unlocked() {return player.ff2.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(1000000000000000000000)},
+			},
+			59: {
+				description: "7x the profits of portal",
+				cost: new Decimal(10000000000000000000000),
+				unlocked() {return player.pf.buyables[11].gte(1)},	
+				canAfford() {return player.points.gte(this.cost)},
+				pay() {return player.points = player.points.sub(10000000000000000000000)},
+			},
 		},
 		achievements: {
             rows: 8,
-            cols: 7,
+            cols: 9,
             11: {
                 name: "The jelly has awakened. Again",
                 done() {return player["tree-tab"].total.gte(1)}, // This one is a freebie
@@ -374,6 +494,21 @@ addLayer("tree-tab", {
                 done() {return player["tree-tab"].total.gte(1000000000)}, // This one is a freebie
                 tooltip: "Make 1e9 jelly", // Showed when the achievement is completed
             },
+            17: {
+                name: "Too much jelly",
+                done() {return player["tree-tab"].total.gte(1000000000000)}, // This one is a freebie
+                tooltip: "Make 1e12 jelly", // Showed when the achievement is completed
+            },
+            18: {
+                name: "orijinal worc do nto stlea",
+                done() {return player["tree-tab"].total.gte(1000000000000000)}, // This one is a freebie
+                tooltip: "Make 1e15 jelly", // Showed when the achievement is completed
+            },
+            19: {
+                name: "I've got enough jellies. I'm satisfied",
+                done() {return player["tree-tab"].total.gte(1000000000000000000)}, // This one is a freebie
+                tooltip: "Make 1e18 jelly", // Showed when the achievement is completed
+            },
 			31: {
                 name: "First steps",
                 done() {return getPointGen().gte(100)},
@@ -401,9 +536,24 @@ addLayer("tree-tab", {
             },
 			36: {
                 name: "Magnitude power",
-                done() {return getPointGen().gte(1000000000000)},
-                tooltip: "Make 1e12 j/s", // Showed when the achievement is completed
-            }, 		
+                done() {return getPointGen().gte(100000000000)},
+                tooltip: "Make 1e11 j/s", // Showed when the achievement is completed
+            }, 
+			37: {
+                name: "SPEED OF KIRB 13.0",
+                done() {return getPointGen().gte(10000000000000)},
+                tooltip: "Make 1e13 j/s", // Showed when the achievement is completed
+            },
+			38: {
+                name: "Hello, can I get 15 antimatters please?",
+                done() {return getPointGen().gte(1000000000000000)},
+                tooltip: "Make 1e15 j/s", // Showed when the achievement is completed
+            },
+			39: {
+                name: "I think we should stop",
+                done() {return getPointGen().gte(100000000000000000)},
+                tooltip: "Make 1e17 j/s", // Showed when the achievement is completed
+            },			
 			51: {
                 name: "Starting manufacturing",
                 done() {return player.ff.buyables[11].gte(1)},
@@ -422,17 +572,32 @@ addLayer("tree-tab", {
 			54: {
                 name: "But there's only one tree...",
                 done() {return player.gf.buyables[11].gte(1)},
-                tooltip: "Unlock 4th floor", // Showed when the achievement is completed
+                tooltip: "Unlock 5th floor", // Showed when the achievement is completed
             },
 			55: {
                 name: "bababooey",
                 done() {return player.gf2.buyables[11].gte(1)},
-                tooltip: "Unlock 5th floor", // Showed when the achievement is completed
+                tooltip: "Unlock 6th floor", // Showed when the achievement is completed
             },
 			56: {
                 name: "Using the wind",
                 done() {return player.wf2.buyables[11].gte(1)},
-                tooltip: "Unlock 6th floor", // Showed when the achievement is completed
+                tooltip: "Unlock 7th floor", // Showed when the achievement is completed
+            },
+			57: {
+                name: "You finally found the key",
+                done() {return player.tcf.buyables[11].gte(1)},
+                tooltip: "Unlock 8th floor", // Showed when the achievement is completed
+            },
+			58: {
+                name: "Wishmaker",
+                done() {return player.ff2.buyables[11].gte(1)},
+                tooltip: "Unlock 9th floor", // Showed when the achievement is completed
+            },
+			59: {
+                name: "Where is the other side?",
+                done() {return player.pf.buyables[11].gte(1)},
+                tooltip: "Unlock 10th floor", // Showed when the achievement is completed
             },
 			61: {
                 name: "How to jelly 101",
@@ -464,6 +629,21 @@ addLayer("tree-tab", {
                 done() {return player.wf2.buyables[11].gte(25)},
                 tooltip() {return player.wf2.buyables[11].gte(1) ? "Upgrade windmill 25 times" : "Upgrade ████████ 25 times"}, // Showed when the achievement is completed
             },
+			67: {
+                name: "A worthy treasure",
+                done() {return player.tcf.buyables[11].gte(25)},
+                tooltip() {return player.tcf.buyables[11].gte(1) ? "Upgrade treasure chest 25 times" : "Upgrade ████████ █████ 25 times"}, // Showed when the achievement is completed
+            },
+			68: {
+                name: "H2J",
+                done() {return player.ff2.buyables[11].gte(25)},
+                tooltip() {return player.ff2.buyables[11].gte(1) ? "Upgrade fountain 25 times" : "Upgrade ████████ 25 times"}, // Showed when the achievement is completed
+            },
+			69: {
+                name: "Wormhole",
+                done() {return player.pf.buyables[11].gte(25)},
+                tooltip() {return player.pf.buyables[11].gte(1) ? "Upgrade portal 25 times" : "Upgrade ██████ 25 times"}, // Showed when the achievement is completed
+            },
             71: {
                 name: "Mass jelly production",
                 done() {return player.ff.buyables[11].gte(100)},
@@ -493,6 +673,21 @@ addLayer("tree-tab", {
                 name: "Green way to produce jelly!",
                 done() {return player.wf2.buyables[11].gte(100)},
                 tooltip() {return player.wf2.buyables[11].gte(1) ? "Upgrade windmill 100 times" : "Upgrade ████████ 100 times"}, // Showed when the achievement is completed
+            },
+			77: {
+                name: "Poverty is no more!",
+                done() {return player.tcf.buyables[11].gte(100)},
+                tooltip() {return player.tcf.buyables[11].gte(1) ? "Upgrade treasure chest 100 times" : "Upgrade ████████ █████ 100 times"}, // Showed when the achievement is completed
+            },
+			78: {
+                name: "Impossible waterfall",
+                done() {return player.ff2.buyables[11].gte(100)},
+                tooltip() {return player.ff2.buyables[11].gte(1) ? "Upgrade fountain 100 times" : "Upgrade ████████ 100 times"}, // Showed when the achievement is completed
+            },
+			79: {
+                name: "Alternative jellyverse",
+                done() {return player.pf.buyables[11].gte(100)},
+                tooltip() {return player.pf.buyables[11].gte(1) ? "Upgrade portal 100 times" : "Upgrade ██████ 100 times"}, // Showed when the achievement is completed
             },
 			84: {
                 name: "Lazy mod activated",
@@ -957,4 +1152,169 @@ addLayer("wf2", {
 	},
 
     layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(175000000) || player.wf2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+})
+
+addLayer("tcf", {
+    startData() { return {                  // startData is a function that returns default data for a layer. 
+        unlocked: true,                     // You can add more variables here to add them to your layer.
+    }},
+	symbol() {if(player.tcf.buyables[11].gte(1)) return "TCF"
+	          else return "?"},
+    color() {if(player.tcf.buyables[11].gte(1)) return "gray"
+	         else return "#4BDC13"},                       // The color for this layer, which affects many elements.
+    row: "side",                                 // The row this layer is on (0 is the first row).
+	position: 7,
+	tooltip() { if(player.tcf.buyables[11] == 0) return "Locked (1.2e9J)"
+	            else return	"Treasure chest floor" },
+	effect() {let eff = new Decimal(2345000)
+			  if(hasUpgrade("tree-tab", 17)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 27)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 37)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 47)) eff = eff.mul(3)
+			  if(hasUpgrade("tree-tab", 57)) eff = eff.mul(7)
+			  return eff},
+	tabFormat: ["blank", "blank",
+				["display-text", function() {return format(player.points)+"<br/>jellies"},
+                {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+				"blank", "blank",
+				["display-text", function() {return "Tresure chest level: "+format(player.tcf.buyables[11])+"<br/>j/s by tresure chest: "+format(player.tcf.buyables[11].mul(layers.tcf.effect()))+"<br/>base j/s: "+format(layers.tcf.effect())},
+                {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11]
+    ],
+
+    buyables: {
+		rows: 1,
+		cols: 1,
+		11: {
+			cost() { if(player.tcf.buyables[11] == 0) return new Decimal(1200000000)
+                      else return new Decimal(1400000000).mul(new Decimal(1.1).pow(player.tcf.buyables[11].sub(1)))},
+			display() { if(player.tcf.buyables[11] == 0) return "Unlock tresure chest (1.2e9J)"
+	                    else return "Upgrade tresure chest ("+format(layers.tcf.buyables[11].cost())+"J)" },
+			canAfford() { return player.points.gte(this.cost()) },
+			buy() {
+				player.points = player.points.sub(this.cost())
+				player.tcf.buyables[11] = player.tcf.buyables[11].add(1)
+			},
+            style() { if (player[this.layer].unlocked) return {
+            'height': '37px',
+            'width': '373px',
+			'background-color': 'gray',
+			'font-size': '20px'
+	            }
+                },
+		},
+	},
+
+    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(1200000000) || player.tcf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+})
+
+addLayer("ff2", {
+    startData() { return {                  // startData is a function that returns default data for a layer. 
+        unlocked: true,                     // You can add more variables here to add them to your layer.
+    }},
+	symbol() {if(player.ff2.buyables[11].gte(1)) return "FF"
+	          else return "?"},
+    color() {if(player.ff2.buyables[11].gte(1)) return "gray"
+	         else return "#4BDC13"},                       // The color for this layer, which affects many elements.
+    row: "side",                                 // The row this layer is on (0 is the first row).
+	position: 8,
+	tooltip() { if(player.ff2.buyables[11] == 0) return "Locked (1.8e10J)"
+	            else return	"Fountain floor" },
+	effect() {let eff = new Decimal(22000000)
+			  if(hasUpgrade("tree-tab", 18)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 28)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 38)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 48)) eff = eff.mul(3)
+			  if(hasUpgrade("tree-tab", 58)) eff = eff.mul(7)
+			  return eff},
+	tabFormat: ["blank", "blank",
+				["display-text", function() {return format(player.points)+"<br/>jellies"},
+                {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+				"blank", "blank",
+				["display-text", function() {return "Fountain level: "+format(player.ff2.buyables[11])+"<br/>j/s by fountain: "+format(player.ff2.buyables[11].mul(layers.ff2.effect()))+"<br/>base j/s: "+format(layers.ff2.effect())},
+                {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11]
+    ],
+
+    buyables: {
+		rows: 1,
+		cols: 1,
+		11: {
+			cost() { if(player.ff2.buyables[11] == 0) return new Decimal(18000000000)
+                      else return new Decimal(20000000000).mul(new Decimal(1.1).pow(player.ff2.buyables[11].sub(1)))},
+			display() { if(player.ff2.buyables[11] == 0) return "Unlock fountain (1.8e10J)"
+	                    else return "Upgrade fountain ("+format(layers.ff2.buyables[11].cost())+"J)" },
+			canAfford() { return player.points.gte(this.cost()) },
+			buy() {
+				player.points = player.points.sub(this.cost())
+				player.ff2.buyables[11] = player.ff2.buyables[11].add(1)
+			},
+            style() { if (player[this.layer].unlocked) return {
+            'height': '37px',
+            'width': '373px',
+			'background-color': 'gray',
+			'font-size': '20px'
+	            }
+                },
+		},
+	},
+
+    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(18000000000) || player.ff2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+})
+
+addLayer("pf", {
+    startData() { return {                  // startData is a function that returns default data for a layer. 
+        unlocked: true,                     // You can add more variables here to add them to your layer.
+    }},
+	symbol() {if(player.pf.buyables[11].gte(1)) return "PF"
+	          else return "?"},
+    color() {if(player.pf.buyables[11].gte(1)) return "gray"
+	         else return "#4BDC13"},                       // The color for this layer, which affects many elements.
+    row: "side",                                 // The row this layer is on (0 is the first row).
+	position: 9,
+	tooltip() { if(player.pf.buyables[11] == 0) return "Locked (4.2e11J)"
+	            else return	"Portal floor" },
+	effect() {let eff = new Decimal(300000000)
+			  if(hasUpgrade("tree-tab", 19)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 29)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 39)) eff = eff.mul(2)
+			  if(hasUpgrade("tree-tab", 49)) eff = eff.mul(3)
+			  if(hasUpgrade("tree-tab", 59)) eff = eff.mul(7)
+			  return eff},
+	tabFormat: ["blank", "blank",
+				["display-text", function() {return format(player.points)+"<br/>jellies"},
+                {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+				"blank", "blank",
+				["display-text", function() {return "Portal level: "+format(player.pf.buyables[11])+"<br/>j/s by portal: "+format(player.pf.buyables[11].mul(layers.pf.effect()))+"<br/>base j/s: "+format(layers.pf.effect())},
+                {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11]
+    ],
+
+    buyables: {
+		rows: 1,
+		cols: 1,
+		11: {
+			cost() { if(player.pf.buyables[11] == 0) return new Decimal(420000000000)
+                      else return new Decimal(450000000000).mul(new Decimal(1.1).pow(player.pf.buyables[11].sub(1)))},
+			display() { if(player.pf.buyables[11] == 0) return "Unlock portal (4.2e11J)"
+	                    else return "Upgrade portal ("+format(layers.pf.buyables[11].cost())+"J)" },
+			canAfford() { return player.points.gte(this.cost()) },
+			buy() {
+				player.points = player.points.sub(this.cost())
+				player.pf.buyables[11] = player.pf.buyables[11].add(1)
+			},
+            style() { if (player[this.layer].unlocked) return {
+            'height': '37px',
+            'width': '373px',
+			'background-color': 'gray',
+			'font-size': '20px'
+	            }
+                },
+		},
+	},
+
+    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(420000000000) || player.pf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
