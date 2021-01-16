@@ -1,22 +1,26 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
+	name: "Jelly Lift: TMT Edition",
+	id: "jellymyass",
 	author: "nobody",
 	pointsName: "jellies",
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	
-	offlineLimit: 1,  // In hours
+	offlineLimit: 168,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.20",
-	name: "Literally nothing",
+	num: "0.30",
+	name: "Still no elevator uses (bruh).",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.30</h3><br>
+		- Three more floors were restored/added in<br/>
+		- Even more achievements! (+15)<br/>
+		- Fixed floor stats to display correctly<br/><br/>
 	<h3>v0.20</h3><br>
 		- Three floors were restored/added in<br/>
 		- More achievements! (+11 and -1 to be exact)<br/>
@@ -45,7 +49,7 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = player.ff.buyables[11].mul(layers.ff.effect()).add(player.wf.buyables[11].mul(layers.wf.effect())).add(player.vf.buyables[11].mul(layers.vf.effect())).add(player.gf2.buyables[11].mul(layers.gf2.effect())).add(player.wf2.buyables[11].mul(layers.wf2.effect()))
+	let gain = player.ff.buyables[11].mul(layers.ff.effect()).add(player.wf.buyables[11].mul(layers.wf.effect())).add(player.vf.buyables[11].mul(layers.vf.effect())).add(player.gf2.buyables[11].mul(layers.gf2.effect())).add(player.wf2.buyables[11].mul(layers.wf2.effect())).add(player.tcf.buyables[11].mul(layers.tcf.effect())).add(player.ff2.buyables[11].mul(layers.ff2.effect())).add(player.pf.buyables[11].mul(layers.pf.effect()))
 	return gain
 }
 
