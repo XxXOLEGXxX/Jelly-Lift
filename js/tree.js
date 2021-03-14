@@ -7,6 +7,7 @@ var layoutInfo = {
     
 }
 
+var funny  = [["unown"], ["d", "d2"]]
 
 // A "ghost" layer which offsets other layers in the tree
 addNode("blank", {
@@ -33,6 +34,9 @@ addLayer("tree-tab", {
 		floorFountain: new Decimal(0),
 		floorPortal: new Decimal(0)
     }},
+	componentStyles: {
+    "upgrade"() { return {'height': '110px', 'width': '110px'} }
+	},
 	update(diff){
 		player["tree-tab"].total = player["tree-tab"].total.add(getPointGen().mul(diff))
 		player["tree-tab"].totalish = player["tree-tab"].totalish.add(getPointGen().mul(diff))
@@ -47,69 +51,6 @@ addLayer("tree-tab", {
 		if(player.points.gt(player["tree-tab"].best)) player["tree-tab"].best = player.points
 	},
         tabFormat: {
-            "Upgrades": { 
-                buttonStyle() {return  {'background-color': 'gray', 'color': 'white', 'border-color': 'gray'}},
-                shouldNotify: false,
-                content:
-                    [["display-text",
-                        function() {return "UPGRADES"},
-                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
-						"h-line", 'blank', 'blank', 'blank', 'blank', "upgrades"],
-            },
-			"Statistics": {
-                buttonStyle() {return  {'background-color': 'gray', 'color': 'white', 'border-color': 'gray'}},
-                content:
-                    [["display-text",
-                        function() {return "GENERAL:"},
-                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
-					'blank', 'blank', 'blank',
-					["display-text",
-                        function() {return "Jelly owned: "+format(player.points)+"<br/>Jelly created (this game): "+format(player["tree-tab"].totalish)+"<br/>Jelly created (all time): "+format(player["tree-tab"].total)+"<br/>Max jelly had: "+format(player["tree-tab"].best)+"<br/>Jelly per second: "+format(getPointGen())+"<br/>Button clicks: "+format(player["tree-tab"].click)+"<br/>Date started: "+new Date(player.time - player.timePlayed * 1000).toLocaleDateString("en-US")+".<br/>Current version: 0.30 (Still No Elevator Uses Upgrade ;( )<br/>Elevator uses: W.I.P."},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					'blank', 'blank', 'blank',
-					["display-text",
-                        function() {return "FLOOR STATS:"},
-                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
-					'blank', 'blank', 'blank',
-					["display-text",
-                        function() {return "Jelly created by button: "+format(player["tree-tab"].floorButton)},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.ff.buyables[11].gte(1) ? "Jelly created by factory: "+format(player["tree-tab"].floorFactory) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.wf.buyables[11].gte(1) ? "Jelly created by well: "+format(player["tree-tab"].floorWell) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.vf.buyables[11].gte(1) ? "Jelly created by volcano: "+format(player["tree-tab"].floorVolcano) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.gf.buyables[11].gte(1) ? "Jelly created by garden: "+format(player["tree-tab"].floorGarden) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.gf2.buyables[11].gte(1) ? "Jelly created by gate: "+format(player["tree-tab"].floorGate) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.wf2.buyables[11].gte(1) ? "Jelly created by windmill: "+format(player["tree-tab"].floorWindmill) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.tcf.buyables[11].gte(1) ? "Jelly created by treasure chest: "+format(player["tree-tab"].floorTreasureChest) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.ff2.buyables[11].gte(1) ? "Jelly created by fountain: "+format(player["tree-tab"].floorFountain) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					["display-text",
-                        function() {return player.pf.buyables[11].gte(1) ? "Jelly created by portal: "+format(player["tree-tab"].floorPortal) : ""},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-					'blank', 'blank', 'blank',
-					["display-text",
-                        function() {return "CREDITS:"},
-                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
-					'blank', 'blank', 'blank',
-					["display-text",
-                        function() {return "Jacorb and Aarex for making Prestige Tree (and papyrus for le idea)<br/>Acamaeda for making The Modding Tree<br/>[REDACTED] for making Jelly Lift<br/>and everyone else for playing this mod."},
-                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}]],
-            },
 			"Lobby": { 
                 buttonStyle() {return  {'background-color': 'gray', 'color': 'white', 'border-color': 'gray'}},
                 content:
@@ -123,9 +64,83 @@ addLayer("tree-tab", {
 					["display-text",
                         function() {return format(player.points) + "<br/>jellies"},
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-						"blank",
+						"blank", "blank",
 					["display-text",
                         function() {return "j/s: "+format(getPointGen())},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.unown.points.gte(1) ? "Chocolate Bars: "+format(player.unown.points) : ""},
+                        {"color": "#7C6A51", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.unown.points.gte(1000000) ? "Diamond boost: 9x" : player.unown.points.gte(1) ? "Diamond boost: 3x" : ""},
+                        {"color": "#9fbcd8", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					"blank", "blank", "blank", "blank", ["tree", funny]],
+            },
+            "Upgrades": { 
+                buttonStyle() {return  {'background-color': 'gray', 'color': 'white', 'border-color': 'gray'}},
+                shouldNotify: false,
+                content:
+                    [["display-text",
+                        function() {return "UPGRADES"},
+                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
+						"h-line", 'blank', 'blank', 'blank', 'blank', 
+						["display-text",
+                        function() {return player.ff.buyables[11] >= 1 || player.wf.buyables[11] >= 1 || player.vf.buyables[11] >= 1 || player.gf.buyables[11] >= 1 || player.tcf.buyables[11] >= 1 || player.wf2.buyables[11] >= 1 || player.gf2.buyables[11] >= 1 || player.ff2.buyables[11] >= 1 || player.pf.buyables[11] >= 1 ? "" : "you need to unlock floor first."},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+						"upgrades"],
+            },
+			"Statistics": {
+                buttonStyle() {return  {'background-color': 'gray', 'color': 'white', 'border-color': 'gray'}},
+                content:
+                    [["display-text",
+                        function() {return "GENERAL:"},
+                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
+					'blank', 'blank', 'blank',
+					["display-text",
+                        function() {return "Jelly owned: "+format(player.points)+"<br/>Jelly created (this game): "+format(player["tree-tab"].totalish)+"<br/>Jelly created (all time): "+format(player["tree-tab"].total)+"<br/>Max jelly had: "+format(player["tree-tab"].best)+"<br/>Jelly per second: "+format(getPointGen())+"<br/>Button clicks: "+format(player["tree-tab"].click)+"<br/>Date started: "+new Date(player.time - player.timePlayed * 1000).toLocaleDateString("en-US")+".<br/>Current version: "+VERSION.num+" ("+VERSION.name+")<br/>Elevator uses: W.I.P."},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					'blank', 'blank', 'blank',
+					["display-text",
+                        function() {return "FLOOR STATS:"},
+                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
+					'blank', 'blank', 'blank',
+					["display-text",
+                        function() {return "Jelly created by button: "+format(player["tree-tab"].floorButton)},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.ff.buyables[11].gte(1) || player["tree-tab"].floorFactory.gt(0) ? "Jelly created by factory: "+format(player["tree-tab"].floorFactory) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.wf.buyables[11].gte(1) || player["tree-tab"].floorWell.gt(0) ? "Jelly created by well: "+format(player["tree-tab"].floorWell) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.vf.buyables[11].gte(1) || player["tree-tab"].floorVolcano.gt(0) ? "Jelly created by volcano: "+format(player["tree-tab"].floorVolcano) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.gf.buyables[11].gte(1) || player["tree-tab"].floorGarden.gt(0) ? "Jelly created by garden: "+format(player["tree-tab"].floorGarden) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.gf2.buyables[11].gte(1) || player["tree-tab"].floorGate.gt(0) ? "Jelly created by gate: "+format(player["tree-tab"].floorGate) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.wf2.buyables[11].gte(1) || player["tree-tab"].floorWindmill.gt(0) ? "Jelly created by windmill: "+format(player["tree-tab"].floorWindmill) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.tcf.buyables[11].gte(1) || player["tree-tab"].floorTreasureChest.gt(0) ? "Jelly created by treasure chest: "+format(player["tree-tab"].floorTreasureChest) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.ff2.buyables[11].gte(1) || player["tree-tab"].floorFountain.gt(0) ? "Jelly created by fountain: "+format(player["tree-tab"].floorFountain) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					["display-text",
+                        function() {return player.pf.buyables[11].gte(1) || player["tree-tab"].floorPortal.gt(0) ? "Jelly created by portal: "+format(player["tree-tab"].floorPortal) : ""},
+                        {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
+					'blank', 'blank', 'blank',
+					["display-text",
+                        function() {return "CREDITS:"},
+                        {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
+					'blank', 'blank', 'blank',
+					["display-text",
+                        function() {return "Jacorb and Aarex for making Prestige Tree (and papyrus for le idea)<br/>Acamaeda for making The Modding Tree<br/>[REDACTED] for making Jelly Lift<br/>and everyone else for playing this mod."},
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}]],
             },
 			"Achievements": {
@@ -712,7 +727,7 @@ addLayer("bf", {
 				"blank", "blank",
 				["display-text", function() {return player.bf.buyables[31] == 1 ? "Jelly per click: 5.00" : "Jelly per click: 1.00"},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
 				["buyable", 11], ["buyable", 21], "blank", "blank", ["buyable", 31]
     ],
 
@@ -722,33 +737,28 @@ addLayer("bf", {
 		11: {
 			cost() { return new Decimal(0) },
 			canAfford() { return true },
+			display: "Click me!",
 			buy() {
-				player.points = player.points.add(1)
-				player["tree-tab"].floorButton = player["tree-tab"].floorButton.add(1)
-				player["tree-tab"].click = player["tree-tab"].click.add(1)
-				player["tree-tab"].total = player["tree-tab"].total.add(1)
-				player["tree-tab"].totalish = player["tree-tab"].totalish.add(1)
+				let base = new Decimal(1)
+				if(player.unown.points.gte(1)) base = base.mul(3)
+				if(player.unown.points.gte(1000000)) base = base.mul(3)
+				player.points = player.points.add(base)
+				player["tree-tab"].floorButton = player["tree-tab"].floorButton.add(base)
+				player["tree-tab"].click = player["tree-tab"].click.add(base)
+				player["tree-tab"].total = player["tree-tab"].total.add(base)
+				player["tree-tab"].totalish = player["tree-tab"].totalish.add(base)
 				if(player.bf.buyables[31].eq(1)) {
-					player.points = player.points.add(4)
-					player["tree-tab"].floorButton = player["tree-tab"].floorButton.add(4)
-					player["tree-tab"].total = player["tree-tab"].total.add(4)
-					player["tree-tab"].totalish = player["tree-tab"].totalish.add(4)
+					player.points = player.points.add(base.mul(4))
+					player["tree-tab"].floorButton = player["tree-tab"].floorButton.add(base.mul(4))
+					player["tree-tab"].total = player["tree-tab"].total.add(base.mul(4))
+					player["tree-tab"].totalish = player["tree-tab"].totalish.add(base.mul(4))
 				}
 			},
             style() { if (player[this.layer].unlocked) return {
-            'height': '57px',
-            'width': '105px',
-			'background-color': '#F90136'
-	            }
-                },
-		},
-		21: {
-			cost() { return new Decimal(0) },
-			canAfford() { return false },
-            style() { if (player[this.layer].unlocked) return {
-            'height': '54px',
+            'height': '166px',
             'width': '166px',
-			'background-color': '#F7D6E8'
+			'font-size': '31px',
+			'background-color': '#F90136'
 	            }
                 },
 		},
@@ -771,7 +781,7 @@ addLayer("bf", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby"}            // Returns a bool for if this layer's node should be visible in the tree.
+    layerShown() { return player.tab == "none" }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("ff", {
@@ -787,6 +797,8 @@ addLayer("ff", {
 	tooltip() { if(player.ff.buyables[11] == 0) return "Locked (20.00J)" 
 	            else return	"Factory floor" },
 	effect() {let eff = new Decimal(1)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 	          if(hasUpgrade("tree-tab", 11)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 21)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 31)) eff = eff.mul(2)
@@ -826,7 +838,8 @@ addLayer("ff", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(20) || player.ff.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["bf"],
+    layerShown() { return player.tab == "none" && (player.points.gte(20) || player.ff.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("wf", {
@@ -842,6 +855,8 @@ addLayer("wf", {
 	tooltip() { if(player.wf.buyables[11] == 0) return "Locked (400.00J)"
 	            else return	"Well floor" },
 	effect() {let eff = new Decimal(10)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 	          if(hasUpgrade("tree-tab", 12)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 22)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 32)) eff = eff.mul(2)
@@ -881,7 +896,8 @@ addLayer("wf", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(400) || player.wf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["ff"],
+    layerShown() { return player.tab == "none" && (player.points.gte(400) || player.wf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("vf", {
@@ -897,6 +913,8 @@ addLayer("vf", {
 	tooltip() { if(player.vf.buyables[11] == 0) return "Locked (25,000J)"
 	            else return	"Volcano floor" },
 	effect() {let eff = new Decimal(70)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 13)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 23)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 33)) eff = eff.mul(2)
@@ -936,7 +954,8 @@ addLayer("vf", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(25000) || player.vf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["wf"],
+    layerShown() { return player.tab == "none" && (player.points.gte(25000) || player.vf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("gf", {
@@ -961,6 +980,8 @@ addLayer("gf", {
 	tooltip() { if(player.gf.buyables[11] == 0) return "Locked (700,000J)"
 	            else return	"Garden floor" },
 	effect() {let eff = new Decimal(5000)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 14)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 24)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 34)) eff = eff.mul(2)
@@ -1041,7 +1062,8 @@ addLayer("gf", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(700000) || player.gf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["vf"],
+    layerShown() { return player.tab == "none" && (player.points.gte(700000) || player.gf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("gf2", {
@@ -1057,6 +1079,8 @@ addLayer("gf2", {
 	tooltip() { if(player.gf2.buyables[11] == 0) return "Locked (15,000,000J)"
 	            else return	"Gate floor" },
 	effect() {let eff = new Decimal(25000)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 15)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 25)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 35)) eff = eff.mul(2)
@@ -1096,7 +1120,8 @@ addLayer("gf2", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(15000000) || player.gf2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["gf"],
+    layerShown() { return player.tab == "none" && (player.points.gte(15000000) || player.gf2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("wf2", {
@@ -1112,6 +1137,8 @@ addLayer("wf2", {
 	tooltip() { if(player.wf2.buyables[11] == 0) return "Locked (175,000,000J)"
 	            else return	"Windmill floor" },
 	effect() {let eff = new Decimal(150000)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 16)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 26)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 36)) eff = eff.mul(2)
@@ -1151,7 +1178,8 @@ addLayer("wf2", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(175000000) || player.wf2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["gf2"],
+    layerShown() { return player.tab == "none" && (player.points.gte(175000000) || player.wf2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("tcf", {
@@ -1167,6 +1195,8 @@ addLayer("tcf", {
 	tooltip() { if(player.tcf.buyables[11] == 0) return "Locked (1.2e9J)"
 	            else return	"Treasure chest floor" },
 	effect() {let eff = new Decimal(2345000)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 			  if(hasUpgrade("tree-tab", 17)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 27)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 37)) eff = eff.mul(2)
@@ -1206,7 +1236,8 @@ addLayer("tcf", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(1200000000) || player.tcf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["wf2"],
+    layerShown() { return player.tab == "none" && (player.points.gte(1200000000) || player.tcf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("ff2", {
@@ -1222,6 +1253,8 @@ addLayer("ff2", {
 	tooltip() { if(player.ff2.buyables[11] == 0) return "Locked (1.8e10J)"
 	            else return	"Fountain floor" },
 	effect() {let eff = new Decimal(22000000)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 			  if(hasUpgrade("tree-tab", 18)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 28)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 38)) eff = eff.mul(2)
@@ -1261,7 +1294,8 @@ addLayer("ff2", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(18000000000) || player.ff2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["tcf"],
+    layerShown() { return player.tab == "none" && (player.points.gte(18000000000) || player.ff2.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
 
 addLayer("pf", {
@@ -1277,6 +1311,8 @@ addLayer("pf", {
 	tooltip() { if(player.pf.buyables[11] == 0) return "Locked (4.2e11J)"
 	            else return	"Portal floor" },
 	effect() {let eff = new Decimal(300000000)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 			  if(hasUpgrade("tree-tab", 19)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 29)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 39)) eff = eff.mul(2)
@@ -1316,5 +1352,116 @@ addLayer("pf", {
 		},
 	},
 
-    layerShown() { return player.tab == "none" && player.subtabs["tree-tab"]["mainTabs"] == "Lobby" && (player.points.gte(420000000000) || player.pf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
+	branches: ["ff2"],
+    layerShown() { return player.tab == "none" && (player.points.gte(420000000000) || player.pf.buyables[11].gte(1)) }            // Returns a bool for if this layer's node should be visible in the tree.
 })
+
+addLayer("unown", {
+    startData() { return {                  // startData is a function that returns default data for a layer. 
+        unlocked: true,                     // You can add more variables here to add them to your layer.
+		points: new Decimal(0),
+    }},
+	symbol: "?",
+    color: "#303030",                       // The color for this layer, which affects many elements.
+    row: 0,                                 // The row this layer is on (0 is the first row).
+	resource: "chocobar",
+    baseResource: "jellies", 
+    baseAmount() {return player["tree-tab"].totalish},
+	type: "normal",
+	exponent: new Decimal(0.5),
+	requires: new Decimal(100000000000),
+	tooltip() { return	"???" },
+	tabFormat: ["blank", "blank", "blank",
+				["display-text", function() {return player.unown.buyables[11].eq(0) ? "" : "Welcome to the Underground Chocolate Cave<br/>You can obtain Chocolate Bars by losing your progress<br/>The more jelly you create, the more CB you will get<br/>Note that achievement and existing CB won't be lost<br/>-Each CB gives you 2% jelly boost"},
+                {"color": "white", "font-size": "20px", "font-family": "Comic Sans MS"}], "blank", "blank", "blank",
+				["display-text", function() {return player.unown.buyables[11].gte(1) ? "" : "It seems that you have grown a little..."},
+                {"color": "white", "font-size": "28px", "font-family": "Comic Sans MS"}],
+				"blank",
+				["display-text", function() {return player.unown.buyables[11].gte(1) ? "" : "It's time for a new era to begin"},
+                {"color": "white", "font-size": "28px", "font-family": "Comic Sans MS"}],
+				"blank", "blank",
+				["display-text", function() {return player.unown.buyables[11].gte(1) ? "" : "*with a symoblie payment of course"},
+                {"color": "white", "font-size": "12px", "font-family": "Comic Sans MS"}],
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], ["buyable", 21],
+				["display-text", function() {return player.unown.buyables[11].eq(0) ? "" : "(You will get "+formatWhole(tmp.unown.resetGain)+" new CB)"},
+                {"color": "white", "font-size": "20px", "font-family": "Comic Sans MS"}], 
+				["display-text", function() {return player.unown.buyables[11].gte(1) && player.unown.points.eq(0) ? "*first reset grants you a diamond, which will boost your jelly/s by 3x" : ""},
+                {"color": "white", "font-size": "12px", "font-family": "Comic Sans MS"}], "prestige-button"
+				
+    ],
+
+    buyables: {
+		rows: 2,
+		cols: 1,
+		11: {
+			cost() { return new Decimal(0) },
+			display() { return "Melt 1T Jelly" },
+			canAfford() { return player.points.gte(this.cost()) },
+			unlocked() { return player.unown.buyables[11].eq(0) },
+			buy() {
+				player.points = player.points.sub(this.cost())
+				player.unown.buyables[11] = player.unown.buyables[11].add(1)
+			},
+            style() { if (player[this.layer].unlocked) return {
+            'height': '37px',
+            'width': '373px',
+			'background-color': '#202020',
+			'color': 'white',
+			'font-size': '20px'
+	            }
+                },
+		},
+		21: {
+			display() { return "Get Chocolate!" },
+			canAfford() { return player.points.gte(1000000000000) },
+			unlocked() { return player.unown.buyables[11].eq(1) },
+			buy() {
+				doReset(this.layer, true)
+			},
+            style() { if (player[this.layer].unlocked) return {
+            'height': '37px',
+            'width': '373px',
+			'background-color': '#202020',
+			'color': 'white',
+			'font-size': '20px'
+	            }
+                },
+		},
+	},
+
+    doReset(resettingLayer){ // Triggers when this layer is being reset, along with the layer doing the resetting. Not triggered by lower layers resetting, but is by layers on the same row.
+        player["tree-tab"].totalish = new Decimal(0)
+		player.bf.buyables[31] = new Decimal(0)
+		player.ff.buyables[11] = new Decimal(0)
+		player.wf.buyables[11] = new Decimal(0)
+		player.vf.buyables[11] = new Decimal(0)
+		player.gf.buyables[11] = new Decimal(0)
+		player.gf.buyables[21] = new Decimal(0)
+		player.gf2.buyables[11] = new Decimal(0)
+		player.wf2.buyables[11] = new Decimal(0)
+		player.tcf.buyables[11] = new Decimal(0)
+		player.ff2.buyables[11] = new Decimal(0)
+		player.pf.buyables[11] = new Decimal(0)
+		player["tree-tab"].upgrades = []
+    },
+    layerShown() { return player.pf.buyables[11].gte(1) || player.unown.points.gte(1) }            // Returns a bool for if this layer's node should be visible in the tree.
+})
+
+addNode("d", {
+    symbol: "D",
+    color: '#6DBAFA',
+    layerShown() {return player.unown.points.gte(1)},
+    canClick() {return true},
+    tooltip: "Your first diamond!",
+}, 
+)
+
+addNode("d2", {
+    symbol: "D",
+    color: '#6DBAFA',
+    layerShown() {return player.unown.points.gte(1000000)},
+    canClick() {return true},
+    tooltip: "Your second diamond!",
+}, 
+)
