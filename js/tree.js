@@ -1387,7 +1387,7 @@ addLayer("unown", {
 				["display-text", function() {return player.unown.buyables[11].eq(0) ? "" : "(You will get "+formatWhole(tmp.unown.resetGain)+" new CB)"},
                 {"color": "white", "font-size": "20px", "font-family": "Comic Sans MS"}], 
 				["display-text", function() {return player.unown.buyables[11].gte(1) && player.unown.points.eq(0) ? "*first reset grants you a diamond, which will boost your jelly/s by 3x" : ""},
-                {"color": "white", "font-size": "12px", "font-family": "Comic Sans MS"}], "prestige-button"
+                {"color": "white", "font-size": "12px", "font-family": "Comic Sans MS"}],
 				
     ],
 
