@@ -12,11 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.30",
-	name: "Still no elevator uses (bruh).",
+	num: "0.40",
+	name: "Nesquik update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.40</h3><br>
+		- Finally added in first prestige system: [CENSORED BY HOLY LAZY ASS]<br/>
+		- Made it so you could access to any floors in any tabs<br/>
+		  (can't access them WHILE in one of the floors)<br/>
+		- Decreased upgrade's size due being too big to fit with floors<br/><br/>
 	<h3>v0.30</h3><br>
 		- Three more floors were restored/added in<br/>
 		- Even more achievements! (+15)<br/>
