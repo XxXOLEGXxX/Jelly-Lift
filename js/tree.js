@@ -1382,20 +1382,35 @@ addLayer("unown", {
 				"blank", "blank",
 				["display-text", function() {return player.unown.buyables[11].gte(1) ? "" : "*with a symoblie payment of course"},
                 {"color": "white", "font-size": "12px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
 				["buyable", 11], ["buyable", 21],
 				["display-text", function() {return player.unown.buyables[11].eq(0) ? "" : "(You will get "+formatWhole(tmp.unown.resetGain)+" new CB)"},
                 {"color": "white", "font-size": "20px", "font-family": "Comic Sans MS"}], 
 				["display-text", function() {return player.unown.buyables[11].gte(1) && player.unown.points.eq(0) ? "*first reset grants you a diamond, which will boost your jelly/s by 3x" : ""},
                 {"color": "white", "font-size": "12px", "font-family": "Comic Sans MS"}],
-				
+				"blank", "blank", "blank", ["bar", "bigBar"]
     ],
 
+        bars: {
+            bigBar: {
+                direction: RIGHT,
+                width: 513,
+                height:  62,
+                display() {return formatWhole(player.unown.points)+"/1,000,000"},
+                fillStyle: {'background-color' : "#5D1700"},
+                baseStyle: {'background-color' : "black"},
+                textStyle: {'color': '#D9AD97', 'font-size': '19px'},
+                progress() {
+                    return (player.unown.points.div(1000000)).toNumber()
+                },
+				unlocked() {return player.unown.buyables[11].gte(1)}
+			},
+		},
     buyables: {
 		rows: 2,
 		cols: 1,
 		11: {
-			cost() { return new Decimal(0) },
+			cost() { return new Decimal(1000000000000) },
 			display() { return "Melt 1T Jelly" },
 			canAfford() { return player.points.gte(this.cost()) },
 			unlocked() { return player.unown.buyables[11].eq(0) },
@@ -1414,7 +1429,7 @@ addLayer("unown", {
 		},
 		21: {
 			display() { return "Get Chocolate!" },
-			canAfford() { return player.points.gte(1000000000000) },
+			canAfford() { return player.points.gte(0) },
 			unlocked() { return player.unown.buyables[11].eq(1) },
 			buy() {
 				doReset(this.layer, true)
@@ -1431,6 +1446,7 @@ addLayer("unown", {
 	},
 
     doReset(resettingLayer){ // Triggers when this layer is being reset, along with the layer doing the resetting. Not triggered by lower layers resetting, but is by layers on the same row.
+		player.unown.points = player.unown.points.add(tmp.unown.resetGain)
         player["tree-tab"].totalish = new Decimal(0)
 		player.bf.buyables[31] = new Decimal(0)
 		player.ff.buyables[11] = new Decimal(0)
