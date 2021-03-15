@@ -96,7 +96,7 @@ addLayer("tree-tab", {
                         {"color": "white", "font-size": "64px", "font-family": "Comic Sans MS"}],
 						"h-line", 'blank', 'blank', 'blank', 'blank', 
 						["display-text",
-                        function() {return player.ff.buyables[11] >= 1 || player.wf.buyables[11] >= 1 || player.vf.buyables[11] >= 1 || player.gf.buyables[11] >= 1 || player.tcf.buyables[11] >= 1 || player.wf2.buyables[11] >= 1 || player.gf2.buyables[11] >= 1 || player.ff2.buyables[11] >= 1 || player.pf.buyables[11] >= 1 ? "" : "you need to unlock floor first."},
+                        function() {return player.ff.buyables[11] >= 1 || player.wf.buyables[11] >= 1 || player.vf.buyables[11] >= 1 || player.gf.buyables[11] >= 1 || player.tcf.buyables[11] >= 1 || player.wf2.buyables[11] >= 1 || player.gf2.buyables[11] >= 1 || player.ff2.buyables[11] >= 1 || player.pf.buyables[11] >= 1 ? "" : "You need to unlock floor first"},
                         {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 						"upgrades"],
             },
