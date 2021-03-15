@@ -12,11 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.40",
-	name: "Nesquik update",
+	num: "0.41",
+	name: "QoL update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h4>v0.41</h4>
+		- Fixed some texts to corresponding floors<br/>
+		  (how nobody noticed that)<br/>
+		- Now you have move around the floors within the floors<br/>
+		- Made [CENSORED BY HOLY LAZY ASS] actually do something<br/><br/>
 	<h3>v0.40</h3><br>
 		- Finally added in first prestige system: [CENSORED BY HOLY LAZY ASS]<br/>
 		- Made it so you could access to any floors in any tabs<br/>
