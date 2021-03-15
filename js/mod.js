@@ -20,7 +20,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h4>v0.41</h4>
 		- Fixed some texts to corresponding floors<br/>
 		  (how nobody noticed that)<br/>
-		- Now you have move around the floors within the floors<br/>
+		- Now you can move around the floors within the floors<br/>
 		- Made [CENSORED BY HOLY LAZY ASS] actually do something<br/><br/>
 	<h3>v0.40</h3><br>
 		- Finally added in first prestige system: [CENSORED BY HOLY LAZY ASS]<br/>
