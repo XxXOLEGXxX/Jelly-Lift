@@ -8,6 +8,17 @@ var layoutInfo = {
 }
 
 var funny  = [["unown"], ["d", "d2"]]
+var firstFloor  = [["ffb"]]
+var secondFloor  = [["bfb", "wfb"]]
+var thirdFloor  = [["ffb", "vfb"]]
+var fourthFloor  = [["wfb", "gfb"]]
+var fifthFloor  = [["vfb", "gf2b"]]
+var sixthFloor  = [["gfb", "wf2b"]]
+var seventhFloor  = [["gf2b", "tcfb"]]
+var eighthFloor  = [["wf2b", "ff2b"]]
+var ninthFloor  = [["tcfb", "pfb"]]
+var tenthFloor  = [["ff2b"]]
+
 
 // A "ghost" layer which offsets other layers in the tree
 addNode("blank", {
@@ -721,14 +732,20 @@ addLayer("bf", {
     row: "side",                                 // The row this layer is on (0 is the first row).
 	position: 0,
 	tooltip: "Button floor",
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(1).mul(multiplier)
+			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
+			  if(player.bf.buyables[31].eq(1)) eff = eff.mul(5)
+			  return eff},
 	tabFormat: ["blank", "blank",
 				["display-text", function() {return format(player.points)+"<br/>jellies"},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 				"blank", "blank",
-				["display-text", function() {return player.bf.buyables[31] == 1 ? "Jelly per click: 5.00" : "Jelly per click: 1.00"},
+				["display-text", function() {return "Jelly per click: "+format(layers.bf.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11], ["buyable", 21], "blank", "blank", ["buyable", 31]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", "blank", ["buyable", 31], "blank", ["tree", firstFloor]
     ],
 
     buyables: {
@@ -739,20 +756,12 @@ addLayer("bf", {
 			canAfford() { return true },
 			display: "Click me!",
 			buy() {
-				let base = new Decimal(1)
-				if(player.unown.points.gte(1)) base = base.mul(3)
-				if(player.unown.points.gte(1000000)) base = base.mul(3)
+				let base = new Decimal(layers.bf.effect())
 				player.points = player.points.add(base)
 				player["tree-tab"].floorButton = player["tree-tab"].floorButton.add(base)
-				player["tree-tab"].click = player["tree-tab"].click.add(base)
+				player["tree-tab"].click = player["tree-tab"].click.add(1)
 				player["tree-tab"].total = player["tree-tab"].total.add(base)
 				player["tree-tab"].totalish = player["tree-tab"].totalish.add(base)
-				if(player.bf.buyables[31].eq(1)) {
-					player.points = player.points.add(base.mul(4))
-					player["tree-tab"].floorButton = player["tree-tab"].floorButton.add(base.mul(4))
-					player["tree-tab"].total = player["tree-tab"].total.add(base.mul(4))
-					player["tree-tab"].totalish = player["tree-tab"].totalish.add(base.mul(4))
-				}
 			},
             style() { if (player[this.layer].unlocked) return {
             'height': '166px',
@@ -796,7 +805,8 @@ addLayer("ff", {
 	position: 1,
 	tooltip() { if(player.ff.buyables[11] == 0) return "Locked (20.00J)" 
 	            else return	"Factory floor" },
-	effect() {let eff = new Decimal(1)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(1).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 	          if(hasUpgrade("tree-tab", 11)) eff = eff.mul(2)
@@ -811,8 +821,8 @@ addLayer("ff", {
 				"blank", "blank",
 				["display-text", function() {return "Factory level: "+format(player.ff.buyables[11])+"<br/>j/s by factory: "+format(player.ff.buyables[11].mul(layers.ff.effect()))+"<br/>base j/s: "+format(layers.ff.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", secondFloor]
     ],
 
     buyables: {
@@ -854,8 +864,8 @@ addLayer("wf", {
 	position: 2,
 	tooltip() { if(player.wf.buyables[11] == 0) return "Locked (400.00J)"
 	            else return	"Well floor" },
-	effect() {let eff = new Decimal(10)
-			  if(player.unown.points.gte(1)) eff = eff.mul(3)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(10).mul(multiplier)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 	          if(hasUpgrade("tree-tab", 12)) eff = eff.mul(2)
 			  if(hasUpgrade("tree-tab", 22)) eff = eff.mul(2)
@@ -867,10 +877,10 @@ addLayer("wf", {
 				["display-text", function() {return format(player.points)+"<br/>jellies"},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 				"blank", "blank",
-				["display-text", function() {return "Factory level: "+format(player.wf.buyables[11])+"<br/>j/s by factory: "+format(player.wf.buyables[11].mul(layers.wf.effect()))+"<br/>base j/s: "+format(layers.wf.effect())},
+				["display-text", function() {return "Well level: "+format(player.wf.buyables[11])+"<br/>j/s by well: "+format(player.wf.buyables[11].mul(layers.wf.effect()))+"<br/>base j/s: "+format(layers.wf.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", thirdFloor]
     ],
 
     buyables: {
@@ -912,7 +922,8 @@ addLayer("vf", {
 	position: 3,
 	tooltip() { if(player.vf.buyables[11] == 0) return "Locked (25,000J)"
 	            else return	"Volcano floor" },
-	effect() {let eff = new Decimal(70)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(70).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 13)) eff = eff.mul(2)
@@ -925,10 +936,10 @@ addLayer("vf", {
 				["display-text", function() {return format(player.points)+"<br/>jellies"},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 				"blank", "blank",
-				["display-text", function() {return "Factory level: "+format(player.vf.buyables[11])+"<br/>j/s by factory: "+format(player.vf.buyables[11].mul(layers.vf.effect()))+"<br/>base j/s: "+format(layers.vf.effect())},
+				["display-text", function() {return "Volcano level: "+format(player.vf.buyables[11])+"<br/>j/s by volcano: "+format(player.vf.buyables[11].mul(layers.vf.effect()))+"<br/>base j/s: "+format(layers.vf.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", fourthFloor]
     ],
 
     buyables: {
@@ -979,7 +990,8 @@ addLayer("gf", {
 	position: 4,
 	tooltip() { if(player.gf.buyables[11] == 0) return "Locked (700,000J)"
 	            else return	"Garden floor" },
-	effect() {let eff = new Decimal(5000)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(5000).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 14)) eff = eff.mul(2)
@@ -994,8 +1006,8 @@ addLayer("gf", {
 				"blank", "blank",
 				["display-text", function() {return player.gf.buyables[11].eq(10) ? "Garden level: Automatic <br/>Time interval: 1<br/>Jellies per box: "+format(layers.gf.effect()) : player.gf.buyables[11].gte(1) ? "Garden level: "+format(player.gf.buyables[11])+"<br/>Time interval: "+format(new Decimal(10).div(player.gf.buyables[11]))+"<br/>Jellies per box: "+format(layers.gf.effect()) : "Garden level: 0<br/>Time interval: N/A<br/>Jellies per box: "+format(layers.gf.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				"clickables", "blank", "blank", ["buyable", 11], ["buyable", 21]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				"clickables", "blank", "blank", ["buyable", 11], ["buyable", 21], "blank", ["tree", fifthFloor]
     ],
 
     clickables: {
@@ -1078,7 +1090,8 @@ addLayer("gf2", {
 	position: 5,
 	tooltip() { if(player.gf2.buyables[11] == 0) return "Locked (15,000,000J)"
 	            else return	"Gate floor" },
-	effect() {let eff = new Decimal(25000)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(25000).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 15)) eff = eff.mul(2)
@@ -1091,10 +1104,10 @@ addLayer("gf2", {
 				["display-text", function() {return format(player.points)+"<br/>jellies"},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
 				"blank", "blank",
-				["display-text", function() {return "Factory level: "+format(player.gf2.buyables[11])+"<br/>j/s by gate: "+format(player.gf2.buyables[11].mul(layers.gf2.effect()))+"<br/>base j/s: "+format(layers.gf2.effect())},
+				["display-text", function() {return "Gate level: "+format(player.gf2.buyables[11])+"<br/>j/s by gate: "+format(player.gf2.buyables[11].mul(layers.gf2.effect()))+"<br/>base j/s: "+format(layers.gf2.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", sixthFloor]
     ],
 
     buyables: {
@@ -1136,7 +1149,8 @@ addLayer("wf2", {
 	position: 6,
 	tooltip() { if(player.wf2.buyables[11] == 0) return "Locked (175,000,000J)"
 	            else return	"Windmill floor" },
-	effect() {let eff = new Decimal(150000)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(150000).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 		      if(hasUpgrade("tree-tab", 16)) eff = eff.mul(2)
@@ -1151,8 +1165,8 @@ addLayer("wf2", {
 				"blank", "blank",
 				["display-text", function() {return "Windmill level: "+format(player.wf2.buyables[11])+"<br/>j/s by windmill: "+format(player.wf2.buyables[11].mul(layers.wf2.effect()))+"<br/>base j/s: "+format(layers.wf2.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", seventhFloor]
     ],
 
     buyables: {
@@ -1194,7 +1208,8 @@ addLayer("tcf", {
 	position: 7,
 	tooltip() { if(player.tcf.buyables[11] == 0) return "Locked (1.2e9J)"
 	            else return	"Treasure chest floor" },
-	effect() {let eff = new Decimal(2345000)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(2345000).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 			  if(hasUpgrade("tree-tab", 17)) eff = eff.mul(2)
@@ -1209,8 +1224,8 @@ addLayer("tcf", {
 				"blank", "blank",
 				["display-text", function() {return "Tresure chest level: "+format(player.tcf.buyables[11])+"<br/>j/s by tresure chest: "+format(player.tcf.buyables[11].mul(layers.tcf.effect()))+"<br/>base j/s: "+format(layers.tcf.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", eighthFloor]
     ],
 
     buyables: {
@@ -1252,7 +1267,8 @@ addLayer("ff2", {
 	position: 8,
 	tooltip() { if(player.ff2.buyables[11] == 0) return "Locked (1.8e10J)"
 	            else return	"Fountain floor" },
-	effect() {let eff = new Decimal(22000000)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(22000000).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 			  if(hasUpgrade("tree-tab", 18)) eff = eff.mul(2)
@@ -1267,8 +1283,8 @@ addLayer("ff2", {
 				"blank", "blank",
 				["display-text", function() {return "Fountain level: "+format(player.ff2.buyables[11])+"<br/>j/s by fountain: "+format(player.ff2.buyables[11].mul(layers.ff2.effect()))+"<br/>base j/s: "+format(layers.ff2.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", ninthFloor]
     ],
 
     buyables: {
@@ -1310,7 +1326,8 @@ addLayer("pf", {
 	position: 9,
 	tooltip() { if(player.pf.buyables[11] == 0) return "Locked (4.2e11J)"
 	            else return	"Portal floor" },
-	effect() {let eff = new Decimal(300000000)
+	effect() {let multiplier = new Decimal(1).add(new Decimal(0.02).mul(player.unown.points))
+			  let eff = new Decimal(300000000).mul(multiplier)
 			  if(player.unown.points.gte(1)) eff = eff.mul(3)
 			  if(player.unown.points.gte(1000000)) eff = eff.mul(3)
 			  if(hasUpgrade("tree-tab", 19)) eff = eff.mul(2)
@@ -1325,8 +1342,8 @@ addLayer("pf", {
 				"blank", "blank",
 				["display-text", function() {return "Portal level: "+format(player.pf.buyables[11])+"<br/>j/s by portal: "+format(player.pf.buyables[11].mul(layers.pf.effect()))+"<br/>base j/s: "+format(layers.pf.effect())},
                 {"color": "white", "font-size": "32px", "font-family": "Comic Sans MS"}],
-				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
-				["buyable", 11]
+				"blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", "blank", 
+				["buyable", 11], "blank", ["tree", tenthFloor]
     ],
 
     buyables: {
@@ -1481,3 +1498,110 @@ addNode("d2", {
     tooltip: "Your second diamond!",
 }, 
 )
+
+addNode("bfb", {
+    symbol: "BF",
+    color: 'gray',
+    layerShown: true,
+    canClick() {return true},
+	onClick() {player.tab = "bf"},
+    tooltip: "Button floor",
+}, 
+)
+
+addNode("ffb", {
+    symbol: "FF",
+    color: 'gray',
+    layerShown() {return player.ff.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "ff"},
+    tooltip: "Factory floor",
+}, 
+)
+
+addNode("wfb", {
+    symbol: "WF",
+    color: 'gray',
+    layerShown() {return player.wf.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "wf"},
+    tooltip: "Well floor",
+}, 
+)
+
+addNode("vfb", {
+    symbol: "VF",
+    color: 'gray',
+    layerShown() {return player.vf.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "vf"},
+    tooltip: "Volcano floor",
+}, 
+)
+
+addNode("gfb", {
+    symbol: "GF",
+    color: 'gray',
+    layerShown() {return player.gf.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "gf"},
+    tooltip: "Garden floor",
+
+}, 
+)
+
+addNode("gf2b", {
+    symbol: "GF",
+    color: 'gray',
+    layerShown() {return player.gf2.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "gf2"},
+    tooltip: "Gate floor",
+
+}, 
+)
+
+addNode("wf2b", {
+    symbol: "WF",
+    color: 'gray',
+    layerShown() {return player.wf2.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "wf2"},
+    tooltip: "Windmill floor",
+
+}, 
+)
+
+addNode("tcfb", {
+    symbol: "TCF",
+    color: 'gray',
+    layerShown() {return player.tcf.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "tcf"},
+    tooltip: "Treasure chest floor",
+
+}, 
+)
+
+addNode("ff2b", {
+    symbol: "FF",
+    color: 'gray',
+    layerShown() {return player.ff2.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "ff2"},
+    tooltip: "Fountain floor",
+
+}, 
+)
+
+addNode("pfb", {
+    symbol: "PF",
+    color: 'gray',
+    layerShown() {return player.pf.buyables[11].gte(1)},
+    canClick() {return true},
+	onClick() {player.tab = "pf"},
+    tooltip: "Portal floor",
+
+}, 
+)
+
